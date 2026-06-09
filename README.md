@@ -1,9 +1,9 @@
 # myChat
-A P2P Application which allows users to send and receive messages & files.
 
 ## Introduction
 
-* TODO
+myChat is a Peer-to-Peer messaging application which allows users to exchange encrypted messages
+directly over a network without a centralised server.
 
 ## Development Tools & Requirements
 
