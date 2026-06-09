@@ -9,8 +9,7 @@ directly over a network without a centralised server.
 
 * `Linux (Ubuntu 20.04)`.
 * Text editor: `ms vscode` was used.
-* Compiler: `gcc 8 or later`.
-* `C++17`.
+* Compiler: `gcc 8 or later` for `C++17` support.
 
 ## Running/Using the Application
 
