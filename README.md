@@ -19,4 +19,4 @@ directly over a network without a centralised server.
 * TODO
   
 ## Other
-Note: this project was developed as part of a training program with [WithYouWithMe](https://withyouwithme.com/).
+* Note: this project was developed as part of a training program with [WithYouWithMe](https://withyouwithme.com/).
