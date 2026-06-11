@@ -1,0 +1,32 @@
+@startuml SendMessageSequence 
+
+actor "Local User" as User
+participant "P2PChatApplication" as App
+participant "PeerManager" as PeerManager
+participant "ChatService" as ChatService
+participant "CryptoService" as CryptoService
+participant "ConnectionManager" as ConnectionManager
+participant "Boost.Asio Connection" as Connection
+participant "Remote Peer" as RemotePeer
+
+User -> App : selectPeer(peerId)
+App -> PeerManager : getOnlinePeers()
+PeerManager --> App : peer
+
+User -> App : sendMessage(text)
+App -> ChatService : createTextMessage(text, peerId)
+ChatService --> App : Message
+
+App -> CryptoService : encrypt(message.serialize())
+CryptoService --> App : encryptedPayload
+
+App -> ConnectionManager : sendToPeer(peerId, encryptedPayload)
+ConnectionManager -> Connection : asyncSend(encryptedPayload)
+Connection -> RemotePeer : encrypted chat message
+
+RemotePeer --> Connection : ACK
+Connection --> ConnectionManager : send complete
+ConnectionManager --> App : delivery confirmed
+App --> User : show message as sent
+
+@enduml
