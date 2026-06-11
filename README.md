@@ -11,7 +11,7 @@ directly over a network without a centralised server.
 * `CMake` for building and running the application.
 ### Develoment Tools
 * `Linux (Ubuntu 20.04)`.
-* Text editor: `ms vscode` is being used. Note: any text editor will do, should you wish to change parts of the software.
+* Text editor: `MS VSCode` is being used. Note: any text editor will do, should you wish to change parts of the software.
 * [Boost.Asio](https://www.boost.org/doc/user-guide/task-networking.html) library for networking.
 * [PlantUML](https://plantuml.com/) for `UML CLass` and related diagrams. You will need `Java`. If you don't have it, install [OpenJDK](https://openjdk.org/?utm_source=chatgpt.com).
 
