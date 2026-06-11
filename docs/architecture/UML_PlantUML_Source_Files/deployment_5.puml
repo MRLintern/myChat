@@ -1,0 +1,44 @@
+@startuml Deployment
+
+node "User Device A\nP2P Client" as DeviceA {
+  artifact "P2P Chat App" as AppA
+  artifact "Boost.Asio Networking" as AsioA
+  artifact "TLS / Crypto Layer" as CryptoA
+  database "Local Message & File Storage" as StorageA
+}
+
+node "User Device B\nP2P Client" as DeviceB {
+  artifact "P2P Chat App" as AppB
+  artifact "Boost.Asio Networking" as AsioB
+  artifact "TLS / Crypto Layer" as CryptoB
+  database "Local Message & File Storage" as StorageB
+}
+
+node "User Device C\nP2P Client" as DeviceC {
+  artifact "P2P Chat App" as AppC
+  artifact "Boost.Asio Networking" as AsioC
+  artifact "TLS / Crypto Layer" as CryptoC
+  database "Local Message & File Storage" as StorageC
+}
+
+node "Bootstrap Server\nOptional" as Bootstrap {
+  artifact "Peer Discovery Service"
+}
+
+node "STUN / TURN Server\nOptional" as NatServer {
+  artifact "NAT Traversal Service"
+}
+
+DeviceA -- DeviceB : encrypted TCP/TLS P2P chat + file transfer
+DeviceA -- DeviceC : encrypted TCP/TLS P2P chat + file transfer
+DeviceB -- DeviceC : encrypted TCP/TLS P2P chat + file transfer
+
+DeviceA ..> Bootstrap : discover peers
+DeviceB ..> Bootstrap : discover peers
+DeviceC ..> Bootstrap : discover peers
+
+DeviceA ..> NatServer : NAT traversal
+DeviceB ..> NatServer : NAT traversal
+DeviceC ..> NatServer : NAT traversal
+
+@enduml
