@@ -3,7 +3,9 @@
 ## Introduction
 
 __VeilExchange__ is a __Peer-to-Peer__ (__P2P__) messaging application which allows users to __exchange encrypted messages__ and __files__
-directly over a network without a centralised server.
+directly over a network without a centralised server. The key difference between a __server-peer__ and a __P2P__ application is that both computers run the same program.
+__One peer__ must __initiate__ the __connection__ using the __other peer’s IP address__ and __port__. Once connected, __both peers__ can __send__ and __receive messages asynchronously__.
+
 
 ## Development Tools & Requirements
 ### Requirements
