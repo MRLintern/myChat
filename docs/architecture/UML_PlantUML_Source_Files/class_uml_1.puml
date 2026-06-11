@@ -1,0 +1,172 @@
+@startuml P2PClasses 
+skinparam classAttributeIconSize 0
+
+enum PeerStatus {
+  ONLINE
+  OFFLINE
+  CONNECTING
+  DISCONNECTED
+  BLOCKED
+}
+
+enum MessageType {
+  TEXT
+  FILE_REQUEST
+  FILE_CHUNK
+  FILE_COMPLETE
+  ACK
+  ERROR
+}
+
+class P2PChatApplication {
+  - currentUser : User
+  - peerManager : PeerManager
+  - connectionManager : ConnectionManager
+  - chatService : ChatService
+  - fileTransferService : FileTransferService
+  - cryptoService : CryptoService
+  + start() : void
+  + shutdown() : void
+}
+
+class User {
+  - userId : string
+  - username : string
+  - publicKey : string
+  + login() : bool
+  + logout() : void
+  + getUsername() : string
+}
+
+class Peer {
+  - peerId : string
+  - username : string
+  - ipAddress : string
+  - port : uint16_t
+  - status : PeerStatus
+  + connect() : bool
+  + disconnect() : void
+  + getStatus() : PeerStatus
+}
+
+class PeerManager {
+  - peers : vector<Peer>
+  + discoverPeers() : vector<Peer>
+  + addPeer(peer : Peer) : void
+  + removePeer(peerId : string) : void
+  + getOnlinePeers() : vector<Peer>
+}
+
+class AsioNetworkService {
+  - ioContext : boost::asio::io_context
+  + run() : void
+  + stop() : void
+}
+
+class Connection {
+  - socket : boost::asio::ip::tcp::socket
+  - remotePeer : Peer
+  - encrypted : bool
+  + asyncConnect(peer : Peer) : void
+  + asyncSend(data : vector<uint8_t>) : void
+  + asyncReceive() : vector<uint8_t>
+  + close() : void
+}
+
+class ConnectionManager {
+  - connections : map<string, Connection>
+  + openConnection(peer : Peer) : void
+  + closeConnection(peerId : string) : void
+  + sendToPeer(peerId : string, data : vector<uint8_t>) : void
+  + broadcast(data : vector<uint8_t>) : void
+}
+
+class ChatService {
+  + createTextMessage(text : string, receiverId : string) : Message
+  + sendMessage(peer : Peer, message : Message) : void
+  + receiveMessage(message : Message) : void
+}
+
+class Message {
+  - messageId : string
+  - senderId : string
+  - receiverId : string
+  - type : MessageType
+  - payload : vector<uint8_t>
+  - timestamp : time_point
+  + serialize() : vector<uint8_t>
+  + deserialize(data : vector<uint8_t>) : Message
+}
+
+class FileTransferService {
+  - activeTransfers : map<string, FileTransferSession>
+  + sendFile(peer : Peer, path : string) : void
+  + requestFile(peer : Peer, fileId : string) : void
+  + receiveChunk(chunk : FileChunk) : void
+}
+
+class FileTransferSession {
+  - transferId : string
+  - file : SharedFile
+  - peer : Peer
+  - completed : bool
+  + start() : void
+  + cancel() : void
+  + isComplete() : bool
+}
+
+class SharedFile {
+  - fileId : string
+  - fileName : string
+  - fileSize : uint64_t
+  - checksum : string
+  + splitIntoChunks(chunkSize : size_t) : vector<FileChunk>
+  + verifyChecksum() : bool
+}
+
+class FileChunk {
+  - chunkId : string
+  - fileId : string
+  - chunkNumber : uint32_t
+  - data : vector<uint8_t>
+  + getData() : vector<uint8_t>
+}
+
+class CryptoService {
+  + performTLSHandshake(peer : Peer) : bool
+  + encrypt(data : vector<uint8_t>) : vector<uint8_t>
+  + decrypt(data : vector<uint8_t>) : vector<uint8_t>
+  + verifyPeerCertificate(peer : Peer) : bool
+}
+
+P2PChatApplication *-- User
+P2PChatApplication *-- PeerManager
+P2PChatApplication *-- ConnectionManager
+P2PChatApplication *-- ChatService
+P2PChatApplication *-- FileTransferService
+P2PChatApplication *-- CryptoService
+
+PeerManager o-- Peer
+Peer --> PeerStatus
+
+ConnectionManager o-- Connection
+Connection --> Peer
+ConnectionManager --> AsioNetworkService
+Connection --> AsioNetworkService
+
+ChatService --> Message
+ChatService --> ConnectionManager
+ChatService --> CryptoService
+
+Message --> MessageType
+
+FileTransferService o-- FileTransferSession
+FileTransferSession --> SharedFile
+FileTransferSession --> Peer
+SharedFile *-- FileChunk
+FileTransferService --> ConnectionManager
+FileTransferService --> CryptoService
+
+CryptoService --> Peer
+
+@enduml
