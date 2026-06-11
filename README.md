@@ -14,7 +14,7 @@ directly over a network without a centralised server.
 * Text editor: `MS VSCode` is being used. Note: any text editor will do, should you wish to change parts of the software.
 * [Boost.Asio](https://www.boost.org/doc/user-guide/task-networking.html) library for networking.
 * [PlantUML](https://plantuml.com/) for `UML CLass` and related diagrams. This requires `Java`. `Java` requires: [OpenJDK](https://openjdk.org/?utm_source=chatgpt.com).
-* `Catch2` for unit testing.
+* [Catch2](https://catch2.org/) for `Unit Testing`.
 
 ## Running/Using the Application
 ### Using the Application
