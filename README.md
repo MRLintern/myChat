@@ -19,6 +19,20 @@ __One peer__ must __initiate__ the __connection__ using the __other peer’s IP 
 * [Catch2](https://catch2.org/) for `Unit Testing`.
 * Possible `UI`: [ncurses](https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/). If not, then the `CLI` will be used.
 
+#### Boost Installation
+##### Linux (Ubuntu)
+* `$ sudo apt update`
+* `$ sudo apt install libboost-all-dev`
+* Check installation:
+* `$ ls /usr/include/boost`
+##### Windows (PowerShell)
+* `$ git clone https://github.com/microsoft/vcpkg`
+* `$ cd vcpkg`
+* `$ .\bootstrap-vcpkg.bat`
+* `$ vcpkg install boost-asio`
+* Integrate with `Visual Studio`
+* `$ vcpkg integrate install`
+
 ## Running/Using the Application
 ### Using the Application
 * `$ mkdir build && cd build`
